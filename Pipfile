@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+"google-cloud-storage" = "*"
+anytree = "*"
+click = "*"
+
+[dev-packages]
+"google-auth" = "*"
+pytest = "*"
+flake8 = "*"
+mock = "*"
+isort = "*"
+
+[requires]
+python_version = "2.7"
