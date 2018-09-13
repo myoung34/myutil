@@ -1,7 +1,7 @@
 MYutil (Marcus Young gsutil)
 ============================
 
-![](https://travis-ci.com/myoung34/myutil.svg?token=vssAhh9gPZNbPscDs9db&branch=master)
+![](https://travis-ci.org/myoung34/myutil.svg?branch=master)
 
 Just a basic re-implementation of some of the [gsutil](https://cloud.google.com/storage/docs/gsutil) commands.
 
