@@ -9,6 +9,12 @@ from myutil.helpers import mkdir_p
 
 
 def tree_from_list(blobs, prefix='/'):
+    """Build an anytree Tree from GCP blob objects
+
+    Keyword arguments:
+    blobs -- GCP blob objects to render
+    prefix -- Initial prefix used to help with render (top-level root-node name)
+    """
     root_node = Node(prefix)
     parent = root_node
     for blob in blobs:
@@ -28,11 +34,23 @@ def tree_from_list(blobs, prefix='/'):
 
 
 def render_tree(tree=None):
+    """Render an anytree Tree
+
+    Keyword arguments:
+    tree -- anytree Node with children
+    """
     for pre, fill, node in RenderTree(tree):
         print("%s%s" % (pre, node.name))
 
 
 def download_blobs(blobs=[], dir=None, recursive=False):
+    """Download an array of GCP blob objects
+
+    Keyword arguments:
+    blobs -- GCP blob objects to download
+    dir -- string directory to download into
+    recursive -- boolean to determine if it should download objects under a subdir
+    """
     if len(blobs) == 1:
         return download_blob(blob=blobs[0], filename=dir)
     if len(blobs) > 1 and not os.path.isdir(dir):
@@ -56,6 +74,12 @@ def download_blobs(blobs=[], dir=None, recursive=False):
 
 
 def download_blob(blob, filename):
+    """Download a GCP blob object
+
+    Keyword arguments:
+    blob -- GCP blob object to download
+    filename -- string filename to download into
+    """
     print('Copying gs://{}/{}...'.format(blob.bucket.name, blob.name))
     if filename.endswith('/'):
         if not os.path.isdir(filename):

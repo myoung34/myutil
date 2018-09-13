@@ -3,7 +3,7 @@ import click
 from google.cloud import storage
 
 import myutil.exceptions
-from myutil.gcp import (download_blobs, render_tree, tree_from_list)
+from myutil.gcp import download_blobs, render_tree, tree_from_list
 
 storage_client = storage.Client()
 
