@@ -35,7 +35,7 @@ Commands:
   ls  List objects in a bucket Keyword arguments:...
 ```
 
-## Pretty list a bucket
+### Pretty list a bucket
 
 ```
 $ myutil ls gs://somebucket/
@@ -47,7 +47,7 @@ $ myutil ls gs://somebucket/
             └── 2.txt
 ```
 
-## Copy a file locally
+### Copy a file locally
 
 ```
 $ myutil cp -r gs://somebucket/mydir/a/1.txt .
@@ -55,7 +55,7 @@ Copying gs://somebucket/mydir/a/1.txt...
 
 ```
 
-## Copy a file locally (recursive)
+### Copy a file locally (recursive)
 
 ```
 $ myutil cp -r gs://somebucket/mydir .
