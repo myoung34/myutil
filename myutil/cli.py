@@ -4,6 +4,7 @@ from google.cloud import storage
 
 import myutil.exceptions
 from myutil.gcp import download_blobs, render_tree, tree_from_list
+from myutil.helpers import bucket_path_from_url
 
 storage_client = storage.Client()
 
@@ -12,16 +13,6 @@ storage_client = storage.Client()
 def cli():
     """ Grouping mechanism """
     pass
-
-
-def validate_and_parse(url):
-    """ Validate the URL given starts with the GCP gs:// protocol
-    and break it into bucket and the non-bucket pieces"""
-
-    if not url.startswith('gs://'):
-        raise Exception('invalid URL {}'.format(url))
-    url_parts = url.replace('gs://', '').split('/', 1)
-    return (storage_client.get_bucket(url_parts[0]), url_parts[1])
 
 
 @cli.command()
@@ -33,7 +24,8 @@ def ls(url):
     url -- The URL in the format gs://bucket/subdir
     """
 
-    (bucket, prefix) = validate_and_parse(url)
+    (bucket_name, prefix) = bucket_path_from_url(url)
+    bucket = storage_client.get_bucket(bucket_name)
     blob_tree = tree_from_list(bucket.list_blobs(prefix=prefix), prefix)
     render_tree(blob_tree)
 
@@ -50,8 +42,9 @@ def cp(recursive, url, dir):
     dir -- The dir to copy to. If recursive, it will create
     """
 
-    (bucket, prefix) = validate_and_parse(url)
-    blobs = [blob for blob in bucket.list_blobs(prefix=prefix)]
+    (bucket_name, prefix) = bucket_path_from_url(url)
+    bucket = storage_client.get_bucket(bucket_name)
+    blobs = [blob for blob in bucket.list_blobs(prefix=prefix)]  # HTTPIterator to list
 
     if len(blobs) == 0:
         raise myutil.exceptions.CommandException('No URLs matched: {}'.format(url))
@@ -59,8 +52,8 @@ def cp(recursive, url, dir):
         print('Omitting prefix "gs://{}/{}/". (Did you mean to do cp -r?)'.format(bucket.name, prefix))
         raise myutil.exceptions.CommandException('No URLs matched')
 
-    download_blobs(blobs=blobs, dir=dir, recursive=recursive)
+    download_blobs(blobs=blobs, dir=dir, prefix=prefix, recursive=recursive)
 
 
 if __name__ == '__main__':
-    cli(obj={})
+    cli()

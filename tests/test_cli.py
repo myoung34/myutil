@@ -38,7 +38,7 @@ def cp(recursive, url, dir):
         return_blobs = ['1.txt', '2.txt']
 
     with mock.patch.object(bucket, 'list_blobs', return_value=return_blobs):
-        blobs = [blob for blob in bucket.list_blobs(prefix=prefix)]
+        blobs = bucket.list_blobs(prefix=prefix)
 
         if len(blobs) == 0:
             raise myutil.exceptions.CommandException('No URLs matched: {}'.format(url))
